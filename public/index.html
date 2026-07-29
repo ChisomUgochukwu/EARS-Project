@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EARS - Employment Application Review System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav id="navbar" class="hidden">
+            <div class="nav-brand">EARS</div>
+            <div class="nav-links">
+                <span id="userInfo"></span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Login/Register View -->
+        <div id="authView" class="auth-container">
+            <div class="auth-box">
+                <h1>EARS</h1>
+                <p class="subtitle">Employment Application Review System</p>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                    <button class="tab-btn" onclick="showTab('register')">Register</button>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit" class="btn-primary">Login</button>
+                    <p class="hint">Demo: admin@ears.com / admin123 | reviewer@ears.com / reviewer123</p>
+                </form>
+
+                <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+                    <input type="text" id="regName" placeholder="Full Name" required>
+                    <input type="email" id="regEmail" placeholder="Email" required>
+                    <input type="password" id="regPassword" placeholder="Password (min 6 chars)" required minlength="6">
+                    <select id="regRole" required>
+                        <option value="">Select Role</option>
+                        <option value="applicant">Applicant</option>
+                        <option value="reviewer">Reviewer</option>
+                    </select>
+                    <button type="submit" class="btn-primary">Register</button>
+                </form>
+                <div id="authMessage"></div>
+            </div>
+        </div>
+
+        <!-- Applicant Dashboard -->
+        <div id="applicantView" class="dashboard hidden">
+            <h2>Applicant Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Available Jobs</h3>
+                    <div id="jobsList" class="list-container"></div>
+                </div>
+                <div class="card">
+                    <h3>My Applications</h3>
+                    <div id="myApplications" class="list-container"></div>
+                </div>
+                <div class="card">
+                    <h3>My Interviews</h3>
+                    <div id="myInterviews" class="list-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviewer Dashboard -->
+        <div id="reviewerView" class="dashboard hidden">
+            <h2>Reviewer Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="card full-width">
+                    <h3>All Applications</h3>
+                    <div id="allApplications" class="list-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminView" class="dashboard hidden">
+            <h2>Admin Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Post New Job</h3>
+                    <form onsubmit="createJob(event)">
+                        <input type="text" id="jobTitle" placeholder="Job Title" required>
+                        <input type="text" id="jobDept" placeholder="Department" required>
+                        <textarea id="jobDesc" placeholder="Description" required></textarea>
+                        <textarea id="jobReq" placeholder="Requirements" required></textarea>
+                        <button type="submit" class="btn-primary">Post Job</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>All Jobs</h3>
+                    <div id="adminJobs" class="list-container"></div>
+                </div>
+                <div class="card full-width">
+                    <h3>System Overview</h3>
+                    <div id="systemStats" class="stats-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evaluation Modal -->
+        <div id="evalModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3>Evaluate Application</h3>
+                <form onsubmit="submitEvaluation(event)">
+                    <input type="hidden" id="evalAppId">
+                    <label>Technical Skills (1-5)</label>
+                    <input type="number" id="techSkills" min="1" max="5" required>
+                    <label>Communication (1-5)</label>
+                    <input type="number" id="commSkills" min="1" max="5" required>
+                    <label>Experience Match (1-5)</label>
+                    <input type="number" id="expMatch" min="1" max="5" required>
+                    <label>Culture Fit (1-5)</label>
+                    <input type="number" id="cultureFit" min="1" max="5" required>
+                    <label>Comments</label>
+                    <textarea id="evalComments"></textarea>
+                    <button type="submit" class="btn-primary">Submit Evaluation</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Interview Modal -->
+        <div id="interviewModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeInterviewModal()">&times;</span>
+                <h3>Schedule Interview</h3>
+                <form onsubmit="scheduleInterview(event)">
+                    <input type="hidden" id="interviewAppId">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" id="interviewDate" required>
+                    <label>Type</label>
+                    <select id="interviewType" required>
+                        <option value="phone">Phone Screen (30 min)</option>
+                        <option value="technical">Technical Interview (60 min)</option>
+                        <option value="final">Final Round (90 min)</option>
+                        <option value="panel">Panel Interview (120 min)</option>
+                    </select>
+                    <label>Location / Video Link</label>
+                    <input type="text" id="interviewLocation" placeholder="Zoom link or Room 302" required>
+                    <button type="submit" class="btn-primary">Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
